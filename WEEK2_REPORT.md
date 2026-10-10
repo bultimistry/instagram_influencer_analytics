@@ -93,20 +93,65 @@ The post records represent multiple posts from a smaller set of accounts. Theref
 
 ## 7. Validation and Quality Checks
 
-The following checks should be included in the final validation evidence:
+The datasets were validated using a Python script with Pandas.
 
-- Number of profile rows
-- Number of unique usernames
-- Duplicate profile usernames
-- Missing or invalid follower counts
-- Profiles that meet the follower eligibility condition
-- Number of post records
-- Number of unique accounts represented in the post dataset
-- Missing values in key post fields
-- Successful matching of post usernames to profile usernames
+### 7.1 Profile Dataset Validation
 
-**Validation results:** [Insert the results from your final validation script.]
+The profile dataset contains 23,726 records and 15 columns.
 
+| Validation check | Result |
+|---|---:|
+| Total profile rows | 23,726 |
+| Unique usernames | 23,726 |
+| Duplicate usernames | 0 |
+| Missing usernames | 0 |
+| Missing follower counts | 0 |
+| Invalid or negative follower counts | 0 |
+| Profiles with fewer than 1 million followers | 23,726 |
+| Missing categories | 0 |
+| Missing verification values | 12 |
+| Profiles with missing latest-post dates | 23,521 |
+| Profiles with missing oldest-post dates | 23,521 |
+
+All profile records have unique usernames, valid non-negative follower counts, and populated category fields. Twelve profiles have missing verification values, while latest-post and oldest-post dates are unavailable for most profiles.
+
+The missing date values are documented rather than treated as evidence that the accounts have never published content.
+
+### 7.2 Post Dataset Validation
+
+The post dataset contains 2,802 records and 42 columns.
+
+| Validation check | Result |
+|---|---:|
+| Total post rows | 2,802 |
+| Unique post accounts | 325 |
+| Duplicate post IDs | 0 |
+| Missing account usernames | 0 |
+| Missing timestamps | 872 |
+| Missing likes counts | 0 |
+| Missing comments counts | 0 |
+| Missing captions | 34 |
+
+The post dataset has no duplicate post IDs according to the validation check. However, 872 records have missing timestamps, and 34 records have missing captions. These fields should be considered when performing time-based or caption-based analysis.
+
+### 7.3 Profile-to-Post Matching
+
+All 325 unique accounts in the post dataset matched usernames in the normalized profile dataset.
+
+| Matching check | Result |
+|---|---:|
+| Post accounts matching profiles | 325 |
+| Post accounts not matching profiles | 0 |
+
+This indicates that every account represented in the post dataset has a corresponding profile record after normalizing usernames for comparison.
+
+### 7.4 Overall Assessment
+
+The profile dataset passed the basic checks for username uniqueness, follower-count completeness, follower eligibility, and category completeness.
+
+The post dataset passed the basic username and post-ID checks, but some timestamps and captions are missing. These limitations are recorded so that missing information is not mistaken for zero activity or used as unsupported evidence.
+
+The validation confirms basic structural consistency. It does not independently establish that every source value is accurate or current.
 ## 8. Output Files
 
 The main preprocessed datasets are:

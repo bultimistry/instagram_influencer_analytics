@@ -230,9 +230,12 @@ print(f"Feature dataset created: {len(df):,} influencers")
 
 print("\n[5/8] Training engagement prediction model...")
 
-
+df["Category_Encoded"], category_labels = pd.factorize(
+    df["Category"].astype(str)
+)
 feature_columns = [
     "Followers",
+    "Category_Encoded",
     "Posts_Analyzed",
     "Avg_Likes",
     "Avg_Comments",
